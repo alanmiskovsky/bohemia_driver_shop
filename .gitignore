@@ -1,0 +1,20 @@
+# Environment files
+.env
+
+# WordPress uploads and cache
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+
+# WordPress debug log
+wp-content/debug.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
