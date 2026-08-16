@@ -19,11 +19,25 @@ class WordPressAPI {
       },
     })
 
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status} ${response.statusText}`)
+    let payload = null
+    const text = await response.text()
+    if (text) {
+      try {
+        payload = JSON.parse(text)
+      } catch {
+        payload = null
+      }
     }
 
-    return response.json()
+    if (!response.ok) {
+      const error = new Error(payload?.message || `API Error: ${response.status} ${response.statusText}`)
+      error.code = payload?.code || `http_${response.status}`
+      error.status = payload?.data?.status || response.status
+      error.data = payload?.data || null
+      throw error
+    }
+
+    return payload
   }
 
   // Pages
@@ -97,6 +111,41 @@ class WordPressAPI {
   // Contact form submission
   async submitContactForm(data) {
     return this.fetch('/contact-form-7/v1/contact-forms/1/feedback', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+  }
+
+  // ─── Bohemia headless plugin (bohemia/v1) ───
+
+  // Public shop configuration (payment methods, packeta widget key, pages, contact…)
+  async getConfig() {
+    return this.fetch('/bohemia/v1/config')
+  }
+
+  // Order detail for the confirmation page (requires the order key)
+  async getOrder(id, key) {
+    const query = new URLSearchParams({ key: key || '' })
+    return this.fetch(`/bohemia/v1/order/${encodeURIComponent(id)}?${query}`)
+  }
+
+  // Payment status of an order (used after returning from Stripe Checkout)
+  async getOrderPaymentStatus(id, key) {
+    const query = new URLSearchParams({ key: key || '' })
+    return this.fetch(`/bohemia/v1/order/${encodeURIComponent(id)}/payment-status?${query}`)
+  }
+
+  // Re-initiate payment for a pending order → { redirect_url }
+  async payOrder(id, key) {
+    return this.fetch(`/bohemia/v1/order/${encodeURIComponent(id)}/pay`, {
+      method: 'POST',
+      body: JSON.stringify({ key }),
+    })
+  }
+
+  // Contact form → { status: 'sent' }
+  async submitContact(data) {
+    return this.fetch('/bohemia/v1/contact', {
       method: 'POST',
       body: JSON.stringify(data),
     })
