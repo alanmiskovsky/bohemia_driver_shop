@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #0e0e0e;
+  --bg-secondary: #141414;
+  --bg-card: #1a1a1a;
+  --bg-card-hover: #222222;
+  --text-primary: #f0ece4;
+  --text-secondary: #8a8478;
+  --text-muted: #5c574e;
+  --accent: #c9a96e;
+  --accent-dim: rgba(201, 169, 110, 0.12);
+  --accent-dim2: rgba(201, 169, 110, 0.06);
+  --border: rgba(201, 169, 110, 0.18);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --shadow: rgba(0, 0, 0, 0.5);
+  --branch-classic: #b8956a;
+  --branch-modern: #7a9cbd;
+  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme='light'] {
+  --bg-primary: #f5f2ec;
+  --bg-secondary: #edeae2;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f7f5f0;
+  --text-primary: #1a1714;
+  --text-secondary: #6b6358;
+  --text-muted: #9a9187;
+  --accent: #a07838;
+  --accent-dim: rgba(160, 120, 56, 0.09);
+  --accent-dim2: rgba(160, 120, 56, 0.04);
+  --border: rgba(160, 120, 56, 0.2);
+  --border-subtle: rgba(0, 0, 0, 0.07);
+  --shadow: rgba(0, 0, 0, 0.1);
+  --branch-classic: #8a6d3f;
+  --branch-modern: #3d6a8a;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background var(--transition), color var(--transition);
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Scroll reveal animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Selection */
+::selection {
+  background: var(--accent);
+  color: #0e0e0e;
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Button base transitions */
+button, a {
+  transition: all var(--transition);
+}
+
+/* Form inputs */
+input, select, textarea {
+  font-family: inherit;
+}
+
+input::placeholder {
+  color: var(--text-muted);
+}
